@@ -1,46 +1,158 @@
-import React, { Component, useState, useMemo } from 'react';
-import { 
-  Code2, Layout, Server, Database, Cloud, GitBranch, Wrench, 
-  Search, Workflow, Layers, Grid, SlidersHorizontal, Sparkles,
-  ChevronRight, ArrowRight, ShieldCheck, Cpu
-} from 'lucide-react';
+import React, { Component, useState, useEffect, useMemo, useRef } from 'react';
+import { Code2, Users, Wrench, Lightbulb, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSkills } from '../hooks/useSkills';
-import { 
-  CATEGORIES, 
-  TECHNOLOGIES, 
-  WORKFLOW_STAGES, 
-  mergeSkillsWithDatabase 
-} from '../data/technologiesData';
-import TechCard from '../components/skills/TechCard';
-import TechDetailModal from '../components/skills/TechDetailModal';
-import TechArchitectureFlow from '../components/skills/TechArchitectureFlow';
+import { getImageUrl } from '../utils/imageUtils';
 
-// Icon mapper for categories
-const CATEGORY_ICON_MAP = {
-  'Frontend Development': Layout,
-  'Backend Development': Server,
-  'Databases': Database,
-  'Cloud Infrastructure': Cloud,
-  'DevOps & Deployment': GitBranch,
-  'Programming Languages': Code2,
-  'Tools & Design': Wrench,
+const isValidIcon = (iconStr) => {
+  return iconStr && iconStr !== 'null' && iconStr !== 'undefined' && iconStr.trim() !== '';
 };
 
-class SkillsErrorBoundary extends Component {
+const DEVICON_MAP = {
+  'html': 'html5', 'html5': 'html5', 'css': 'css3', 'css3': 'css3',
+  'javascript': 'javascript', 'js': 'javascript', 'typescript': 'typescript', 'ts': 'typescript',
+  'react': 'react', 'react.js': 'react', 'reactjs': 'react', 'react native': 'react',
+  'next.js': 'nextjs', 'nextjs': 'nextjs', 'next': 'nextjs',
+  'vue': 'vuejs', 'vue.js': 'vuejs', 'vuejs': 'vuejs',
+  'angular': 'angular', 'angularjs': 'angularjs',
+  'svelte': 'svelte', 'node': 'nodejs', 'node.js': 'nodejs', 'nodejs': 'nodejs',
+  'express': 'express', 'express.js': 'express', 'expressjs': 'express',
+  'python': 'python', 'java': 'java', 'c': 'c', 'c++': 'cplusplus', 'cpp': 'cplusplus',
+  'c#': 'csharp', 'csharp': 'csharp', 'go': 'go', 'golang': 'go',
+  'rust': 'rust', 'ruby': 'ruby', 'php': 'php', 'swift': 'swift',
+  'kotlin': 'kotlin', 'dart': 'dart', 'flutter': 'flutter', 'r': 'r',
+  'mongodb': 'mongodb', 'mongo': 'mongodb', 'mysql': 'mysql',
+  'postgresql': 'postgresql', 'postgres': 'postgresql',
+  'redis': 'redis', 'sqlite': 'sqlite', 'firebase': 'firebase',
+  'docker': 'docker', 'kubernetes': 'kubernetes', 'k8s': 'kubernetes',
+  'aws': 'amazonwebservices', 'azure': 'azure', 'gcp': 'googlecloud', 'google cloud': 'googlecloud',
+  'git': 'git', 'github': 'github', 'gitlab': 'gitlab', 'bitbucket': 'bitbucket',
+  'linux': 'linux', 'ubuntu': 'ubuntu', 'bash': 'bash',
+  'nginx': 'nginx', 'apache': 'apache',
+  'figma': 'figma', 'sketch': 'sketch', 'photoshop': 'photoshop',
+  'illustrator': 'illustrator', 'xd': 'xd',
+  'tailwind': 'tailwindcss', 'tailwindcss': 'tailwindcss', 'tailwind css': 'tailwindcss',
+  'bootstrap': 'bootstrap', 'sass': 'sass', 'scss': 'sass', 'less': 'less',
+  'webpack': 'webpack', 'vite': 'vitejs', 'babel': 'babel',
+  'npm': 'npm', 'yarn': 'yarn', 'pnpm': 'pnpm',
+  'jest': 'jest', 'mocha': 'mocha', 'cypress': 'cypressio',
+  'graphql': 'graphql', 'rest api': 'fastapi', 'fastapi': 'fastapi',
+  'django': 'django', 'flask': 'flask', 'spring': 'spring', 'spring boot': 'spring',
+  'laravel': 'laravel', 'rails': 'rails', 'ruby on rails': 'rails',
+  'tensorflow': 'tensorflow', 'pytorch': 'pytorch',
+  'pandas': 'pandas', 'numpy': 'numpy', 'jupyter': 'jupyter',
+  'heroku': 'heroku', 'vercel': 'vercel', 'netlify': 'netlify',
+  'jira': 'jira', 'confluence': 'confluence', 'trello': 'trello',
+  'slack': 'slack', 'vscode': 'vscode', 'visual studio code': 'vscode',
+  'intellij': 'intellij', 'android': 'android', 'ios': 'apple',
+  'unity': 'unity', 'unreal': 'unrealengine',
+  'three.js': 'threejs', 'threejs': 'threejs',
+  'socket.io': 'socketio', 'socketio': 'socketio',
+  'postman': 'postman', 'insomnia': 'insomnia',
+  'material ui': 'materialui', 'mui': 'materialui',
+  'redux': 'redux', 'mobx': 'mobx',
+  'electron': 'electron', 'deno': 'denojs',
+  'supabase': 'supabase', 'prisma': 'prisma',
+  'mongoose': 'mongoose',
+  'vs code': 'vscode', 'visual studio': 'visualstudio'
+};
+
+const getDeviconUrl = (skillName) => {
+  if (!skillName) return null;
+  const key = skillName.toLowerCase().trim();
+  const deviconName = DEVICON_MAP[key];
+  if (deviconName) {
+    return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${deviconName}/${deviconName}-original.svg`;
+  }
+  return null;
+};
+
+const SkillItem = ({ skill }) => {
+  if (!skill || !skill.name) return null;
+
+  const [imgError, setImgError] = useState(false);
+  const [deviconError, setDeviconError] = useState(false);
+
+  const hasStoredIcon = isValidIcon(skill.icon);
+  const deviconUrl = !hasStoredIcon ? getDeviconUrl(skill.name) : null;
+  const iconSrc = hasStoredIcon ? getImageUrl(skill.icon) : deviconUrl;
+  const showFallback = (!iconSrc || (hasStoredIcon && imgError) || (!hasStoredIcon && deviconError));
+
+  return (
+    <div className="flex-shrink-0 flex flex-col items-center justify-center p-2 w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] bg-theme-bg/60 backdrop-blur-md rounded-xl border border-theme-border shadow-theme-glow-sm cursor-pointer relative group/icon hover:border-accent-500/50">
+      {!showFallback ? (
+        <img
+          src={iconSrc}
+          alt={skill.name}
+          className="w-7 h-7 sm:w-8 sm:h-8 object-contain relative z-10"
+          onError={() => {
+            if (hasStoredIcon) setImgError(true);
+            else setDeviconError(true);
+          }}
+        />
+      ) : (
+        <span className="text-lg sm:text-xl font-bold text-accent-400 relative z-10">
+          {skill.name ? skill.name.charAt(0).toUpperCase() : '?'}
+        </span>
+      )}
+      <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-bold text-theme-muted opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none bg-theme-card/90 px-2 py-0.5 rounded border border-theme-border shadow-lg z-30 tracking-wider uppercase">
+        {skill.name}
+      </div>
+    </div>
+  );
+};
+
+const CategoryCard = ({ category }) => {
+  if (!category || !category.icon) return null;
+  const IconComponent = category.icon;
+
+  return (
+    <div
+      className="bg-theme-card/40 backdrop-blur-xl p-4 sm:p-5 rounded-2xl border border-theme-border shadow-theme-glow-sm hover:shadow-theme-glow w-[260px] sm:w-[290px] md:w-[320px] shrink-0 snap-start flex flex-col h-full"
+    >
+      <div className="flex items-center gap-3 mb-4">
+        <div className={`p-2.5 rounded-xl bg-gradient-to-br ${category.gradient || 'from-slate-500 to-slate-400'} text-white shadow-md shadow-accent-500/20`}>
+          <IconComponent size={20} />
+        </div>
+        <div>
+          <h3 className="text-base sm:text-lg font-bold font-heading text-theme-text">{category.title}</h3>
+          <p className="text-[10px] font-bold text-theme-muted uppercase tracking-wider mt-0.5">{category.subtitle}</p>
+        </div>
+      </div>
+
+      <div className="space-y-4 flex-grow">
+        {(category.groups || []).map((group, gIdx) => (
+          <div key={gIdx} className="space-y-2">
+            <h4 className="text-[11px] font-bold text-theme-text flex items-center gap-1.5 uppercase tracking-wider text-theme-muted">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-500"></span>
+              {group.name}
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {(group.skills || []).map((skill, sIdx) => (
+                <SkillItem key={sIdx} skill={skill} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
   }
-  static getDerivedStateFromError() { return { hasError: true }; }
-  componentDidCatch(error, errorInfo) { 
-    console.error("Skills Section Error:", error, errorInfo); 
+  static getDerivedStateFromError(error) { return { hasError: true }; }
+  componentDidCatch(error, errorInfo) {
+    console.error("Skills Section Error:", error, errorInfo);
   }
   render() {
     if (this.state.hasError) {
       return (
         <div className="py-16 text-center bg-theme-card/20 backdrop-blur-md rounded-2xl border border-theme-border m-4">
           <h2 className="text-lg font-bold text-theme-text mb-2">Something went wrong</h2>
-          <p className="text-theme-muted text-sm">The skills section encountered an error. Please reload.</p>
+          <p className="text-theme-muted text-sm">The skills section failed to load. Please refresh the page.</p>
         </div>
       );
     }
@@ -49,267 +161,92 @@ class SkillsErrorBoundary extends Component {
 }
 
 const Skills = () => {
-  const { data: dbData, loading } = useSkills();
-  const dbSkills = Array.isArray(dbData) ? dbData : [];
+  const { data, loading } = useSkills();
+  const dbSkills = typeof data === 'object' && Array.isArray(data) ? data : [];
+  const scrollRef = useRef(null);
 
-  // Master merged list of technologies (Codebase Architecture + Dynamic DB items)
-  const allTechnologies = useMemo(() => {
-    return mergeSkillsWithDatabase(dbSkills);
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === 'left' ? -320 : 320;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const categories = useMemo(() => {
+    const build = (title, subtitle, icon, gradient, catName, span) => {
+      const skills = dbSkills.filter(s => s && s.category === catName);
+      if (skills.length === 0) return null;
+
+      const groupMap = {};
+      skills.forEach(s => {
+        const gName = s.group || 'General';
+        if (!groupMap[gName]) groupMap[gName] = [];
+        groupMap[gName].push(s);
+      });
+
+      return {
+        title, subtitle, icon, gradient, span,
+        groups: Object.entries(groupMap).map(([name, skills]) => ({ name, skills }))
+      };
+    };
+
+    return [
+      build("Technical Skills", "Primary Expertise", Code2, "from-blue-500 to-cyan-400", "Technical Skills", true),
+      build("Core / Soft Skills", "Professional Qualities", Users, "from-emerald-500 to-teal-400", "Core / Soft Skills", false),
+      build("Tools & Technologies", "Workflow & Ecosystem", Wrench, "from-amber-500 to-orange-400", "Tools & Technologies", false),
+      build("Additional Skills", "Versatility", Lightbulb, "from-purple-500 to-pink-400", "Additional Skills", false)
+    ].filter(Boolean);
   }, [dbSkills]);
 
-  // UI View Mode: 'workflow' (Architecture Diagram) vs 'categories' (Categorized Grid)
-  const [activeView, setActiveView] = useState('workflow');
-
-  // Search & Category Filters
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  // Selected technology for the detail modal
-  const [selectedTech, setSelectedTech] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenDetail = (tech) => {
-    setSelectedTech(tech);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseDetail = () => {
-    setIsModalOpen(false);
-  };
-
-  // Filtered technologies for the categorized grid view
-  const filteredTechnologies = useMemo(() => {
-    return allTechnologies.filter((tech) => {
-      const matchesCategory = selectedCategory === 'All' || tech.category === selectedCategory;
-      const matchesSearch = 
-        !searchQuery.trim() || 
-        tech.name.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
-        (tech.purpose && tech.purpose.toLowerCase().includes(searchQuery.toLowerCase().trim())) ||
-        (tech.category && tech.category.toLowerCase().includes(searchQuery.toLowerCase().trim()));
-      
-      return matchesCategory && matchesSearch;
-    });
-  }, [allTechnologies, selectedCategory, searchQuery]);
-
-  // Group technologies by category dynamically so any new category automatically renders!
-  const groupedCategories = useMemo(() => {
-    const map = new Map();
-
-    // Preserve ordering from predefined CATEGORIES
-    CATEGORIES.forEach(cat => {
-      map.set(cat.name, {
-        meta: cat,
-        items: []
-      });
-    });
-
-    // Populate with filtered technologies
-    filteredTechnologies.forEach(tech => {
-      const catName = tech.category || 'Tools & Design';
-      if (!map.has(catName)) {
-        map.set(catName, {
-          meta: {
-            id: catName,
-            name: catName,
-            badge: 'Category',
-            subtitle: 'Specialized Technologies',
-            description: `${catName} and supporting utilities.`,
-            icon: 'Code2',
-            accentColor: 'text-accent-400',
-            bgGlow: 'from-accent-500/10 to-blue-500/10',
-          },
-          items: []
-        });
-      }
-      map.get(catName).items.push(tech);
-    });
-
-    // Return non-empty categories
-    return Array.from(map.values()).filter(entry => entry.items.length > 0);
-  }, [filteredTechnologies]);
-
-  // Unique list of all category names for filter tabs
-  const categoryNames = useMemo(() => {
-    const set = new Set();
-    allTechnologies.forEach(t => {
-      if (t.category) set.add(t.category);
-    });
-    return ['All', ...Array.from(set)];
-  }, [allTechnologies]);
-
-  if (loading && allTechnologies.length === 0) {
-    return (
-      <div className="flex justify-center py-20">
-        <div className="w-8 h-8 border-3 border-accent-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  if (loading) return (
+    <div className="flex justify-center py-16">
+      <div className="w-8 h-8 border-3 border-accent-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
 
   return (
-    <SkillsErrorBoundary>
-      <section id="skills" className="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+    <ErrorBoundary>
+      <section id="skills" className="py-14 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+        <div className="flex items-end justify-between mb-8">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-500/10 text-accent-400 text-xs font-bold border border-accent-500/20 mb-3">
-              <Sparkles size={13} className="text-accent-400" />
-              Production Engineering Toolkit
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-theme-text tracking-tight">
-              Technology Stack & <span className="text-gradient">Architecture</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold font-heading text-theme-text mb-3">
+              Expertise & <span className="text-gradient">Skills</span>
             </h2>
-            <div className="w-20 h-1.5 bg-accent-500 rounded-full mt-3 mb-3"></div>
-            <p className="text-theme-muted max-w-2xl text-sm sm:text-base leading-relaxed">
-              An architectural breakdown of the technologies, cloud frameworks, and DevOps pipelines I use to build, scale, and maintain high-performance software applications.
+            <div className="w-16 h-1.5 bg-accent-500 rounded-full mb-3"></div>
+            <p className="text-theme-muted max-w-2xl text-sm sm:text-base">
+              A comprehensive overview of my technical capabilities and professional strengths.
             </p>
           </div>
 
-          {/* View Switcher: Architecture Flow vs All Categories Grid */}
-          <div className="flex items-center p-1.5 bg-theme-card/70 dark:bg-dark-800/80 rounded-2xl border border-theme-border/80 shadow-md shrink-0">
+          {/* Navigation buttons */}
+          <div className="flex items-center gap-2 pb-1 shrink-0 ml-4">
             <button
-              onClick={() => setActiveView('workflow')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                activeView === 'workflow'
-                  ? 'bg-accent-500 text-white shadow-theme-glow-sm'
-                  : 'text-theme-muted hover:text-theme-text'
-              }`}
+              onClick={() => scroll('left')}
+              aria-label="Scroll left"
+              className="p-2 rounded-lg bg-theme-card border border-theme-border text-theme-muted hover:text-accent-500 hover:border-accent-500/50 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
             >
-              <Workflow size={16} />
-              <span>Stack Architecture</span>
+              <ChevronLeft size={18} />
             </button>
             <button
-              onClick={() => setActiveView('categories')}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                activeView === 'categories'
-                  ? 'bg-accent-500 text-white shadow-theme-glow-sm'
-                  : 'text-theme-muted hover:text-theme-text'
-              }`}
+              onClick={() => scroll('right')}
+              aria-label="Scroll right"
+              className="p-2 rounded-lg bg-theme-card border border-theme-border text-theme-muted hover:text-accent-500 hover:border-accent-500/50 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
             >
-              <Grid size={16} />
-              <span>All Technologies ({allTechnologies.length})</span>
+              <ChevronRight size={18} />
             </button>
           </div>
         </div>
 
-        {/* View 1: Architecture Workflow Visualization */}
-        {activeView === 'workflow' && (
-          <TechArchitectureFlow
-            onSelectTech={handleOpenDetail}
-            selectedTech={selectedTech}
-          />
-        )}
-
-        {/* View 2: All Technologies Categorized Grid */}
-        {activeView === 'categories' && (
-          <div className="space-y-8">
-            {/* Search & Category Filter Controls */}
-            <div className="glass p-4 rounded-2xl border border-theme-border/80 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-              {/* Category Pills (horizontal scrollable) */}
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide flex-1">
-                {categoryNames.map((catName) => {
-                  const isSelected = selectedCategory === catName;
-                  return (
-                    <button
-                      key={catName}
-                      onClick={() => setSelectedCategory(catName)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer border ${
-                        isSelected
-                          ? 'bg-accent-500 text-white border-accent-500 shadow-theme-glow-sm'
-                          : 'bg-theme-bg/60 text-theme-muted hover:text-theme-text hover:bg-theme-border/60 border-theme-border'
-                      }`}
-                    >
-                      {catName}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Search Bar */}
-              <div className="relative w-full md:w-64 shrink-0">
-                <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
-                <input
-                  type="text"
-                  placeholder="Search technologies..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-theme-bg/80 border border-theme-border text-theme-text placeholder-theme-muted focus:outline-none focus:ring-1 focus:ring-accent-500 transition shadow-inner"
-                />
-              </div>
-            </div>
-
-            {/* Empty state */}
-            {groupedCategories.length === 0 ? (
-              <div className="text-center py-16 glass rounded-2xl">
-                <Code2 className="mx-auto h-12 w-12 text-theme-muted mb-3 opacity-60" />
-                <h3 className="text-lg font-bold text-theme-text">No technologies found</h3>
-                <p className="text-theme-muted text-xs mt-1">Try clearing your search query or selecting a different category.</p>
-                <button
-                  onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}
-                  className="mt-4 px-4 py-2 rounded-xl bg-accent-500 text-white text-xs font-bold hover:bg-accent-600 transition cursor-pointer"
-                >
-                  Reset Filters
-                </button>
-              </div>
-            ) : (
-              /* Categorized Sections */
-              <div className="space-y-10">
-                {groupedCategories.map(({ meta, items }) => {
-                  const CategoryIcon = CATEGORY_ICON_MAP[meta.name] || Code2;
-
-                  return (
-                    <div key={meta.id} className="space-y-4">
-                      {/* Category Header */}
-                      <div className="flex items-center justify-between pb-3 border-b border-theme-border/70">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 rounded-xl bg-accent-500/10 text-accent-400 border border-accent-500/20">
-                            <CategoryIcon size={18} />
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <h3 className="text-lg sm:text-xl font-bold font-heading text-theme-text">
-                                {meta.name}
-                              </h3>
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-theme-bg border border-theme-border text-accent-500">
-                                {items.length}
-                              </span>
-                            </div>
-                            <p className="text-xs text-theme-muted mt-0.5 hidden sm:block">
-                              {meta.description}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Technology Cards Grid */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {items.map((tech) => (
-                          <TechCard
-                            key={tech.id}
-                            tech={tech}
-                            onSelect={handleOpenDetail}
-                            isSelected={selectedTech?.id === tech.id}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Interactive Technology Detail Modal */}
-        <TechDetailModal
-          tech={selectedTech}
-          isOpen={isModalOpen}
-          onClose={handleCloseDetail}
-          onSelectRelated={(relatedTech) => {
-            setSelectedTech(relatedTech);
-          }}
-        />
+        <div
+          ref={scrollRef}
+          className="flex flex-nowrap overflow-x-auto gap-5 pb-5 pt-1 scroll-smooth snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0"
+        >
+          {categories.map((cat, idx) => (
+            <CategoryCard key={idx} category={cat} />
+          ))}
+        </div>
       </section>
-    </SkillsErrorBoundary>
+    </ErrorBoundary>
   );
 };
 
