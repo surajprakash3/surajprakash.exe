@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
 import * as chatService from '../services/chatService';
 
@@ -53,40 +52,24 @@ const ChatBot = () => {
   return (
     <>
       {/* Floating button */}
-      <motion.button
+      <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-accent-500 to-indigo-600 text-white shadow-lg shadow-accent-500/30 hover:shadow-accent-500/50 flex items-center justify-center transition-shadow"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+        className="fixed bottom-6 right-6 z-50 w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-accent-500 to-indigo-600 text-white shadow-lg shadow-accent-500/20 hover:shadow-accent-500/40 flex items-center justify-center transition-all cursor-pointer"
         aria-label="Toggle chat"
         id="chatbot-toggle"
       >
-        <AnimatePresence mode="wait">
-          {isOpen ? (
-            <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
-              <X size={24} />
-            </motion.div>
-          ) : (
-            <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
-              <MessageCircle size={24} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.button>
+        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
+      </button>
 
       {/* Chat window */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-3rem)] h-[480px] rounded-2xl shadow-2xl border border-slate-200 dark:border-dark-700 flex flex-col overflow-hidden bg-white dark:bg-dark-800"
-            id="chatbot-window"
-          >
-            {/* Header */}
-            <div className="px-4 py-3 bg-gradient-to-r from-accent-500 to-indigo-600 text-white flex items-center gap-3">
+      {isOpen && (
+        <div
+          className="fixed bottom-24 right-4 sm:right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[480px] rounded-2xl shadow-2xl border border-slate-200 dark:border-dark-700 flex flex-col overflow-hidden bg-white dark:bg-dark-800"
+          id="chatbot-window"
+        >
+          {/* Header */}
+          <div className="px-4 py-3 bg-gradient-to-r from-accent-500 to-indigo-600 text-white flex items-center justify-between">
+            <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                 <Bot size={18} />
               </div>
@@ -95,103 +78,106 @@ const ChatBot = () => {
                 <p className="text-xs text-white/80">Powered by AI</p>
               </div>
             </div>
+            <button 
+              onClick={() => setIsOpen(false)} 
+              className="p-1 rounded hover:bg-white/10 text-white"
+              aria-label="Close chat"
+            >
+              <X size={18} />
+            </button>
+          </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`flex items-start gap-2 max-w-[88%] ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                      msg.role === 'user' 
-                        ? 'bg-accent-100 dark:bg-accent-900/30 text-accent-600' 
-                        : 'bg-slate-100 dark:bg-dark-700 text-slate-600 dark:text-slate-300'
-                    }`}>
-                      {msg.role === 'user' ? <User size={12} /> : <Bot size={12} />}
-                    </div>
-                    <div className={`px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap break-words shadow-sm ${
-                      msg.role === 'user'
-                        ? 'bg-accent-500 text-white rounded-br-sm'
-                        : 'bg-slate-100 dark:bg-dark-700 text-slate-700 dark:text-slate-200 rounded-bl-sm border border-slate-200/50 dark:border-dark-600/50'
-                    }`}>
-                      {msg.content}
-                    </div>
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {messages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`flex items-start gap-2 max-w-[88%] ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                    msg.role === 'user' 
+                      ? 'bg-accent-100 dark:bg-accent-900/30 text-accent-600' 
+                      : 'bg-slate-100 dark:bg-dark-700 text-slate-600 dark:text-slate-300'
+                  }`}>
+                    {msg.role === 'user' ? <User size={12} /> : <Bot size={12} />}
+                  </div>
+                  <div className={`px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap break-words shadow-sm ${
+                    msg.role === 'user'
+                      ? 'bg-accent-500 text-white rounded-br-sm'
+                      : 'bg-slate-100 dark:bg-dark-700 text-slate-700 dark:text-slate-200 rounded-bl-sm border border-slate-200/50 dark:border-dark-600/50'
+                  }`}>
+                    {msg.content}
                   </div>
                 </div>
-              ))}
-
-              {/* Quick suggestion chips if only initial greeting is present */}
-              {messages.length === 1 && (
-                <div className="pt-2 flex flex-wrap gap-1.5">
-                  {[
-                    'Show certifications 📜',
-                    'Featured projects 💻',
-                    'Work experience 💼',
-                    'Contact info ✉️'
-                  ].map((chip, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => {
-                        setInput(chip);
-                        setTimeout(() => {
-                          const sendBtn = document.getElementById('chatbot-send');
-                          if (sendBtn) sendBtn.click();
-                        }, 50);
-                      }}
-                      className="text-xs px-2.5 py-1 rounded-full bg-slate-100 dark:bg-dark-700 hover:bg-accent-500 hover:text-white dark:hover:bg-accent-600 text-slate-600 dark:text-slate-300 transition-colors border border-slate-200/70 dark:border-dark-600 text-left"
-                    >
-                      {chip}
-                    </button>
-                  ))}
-                </div>
-              )}
-              
-              {isTyping && (
-                <div className="flex justify-start">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-slate-100 dark:bg-dark-700 flex items-center justify-center text-slate-600 dark:text-slate-300">
-                      <Bot size={12} />
-                    </div>
-                    <div className="px-4 py-3 rounded-2xl rounded-bl-md bg-slate-100 dark:bg-dark-700">
-                      <div className="flex gap-1">
-                        <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                        <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                        <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input */}
-            <div className="p-3 border-t border-slate-200 dark:border-dark-700">
-              <div className="flex items-center gap-2">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Type a message..."
-                  className="flex-1 px-4 py-2.5 rounded-full bg-slate-100 dark:bg-dark-700 text-sm text-slate-700 dark:text-slate-200 border-0 outline-none focus:ring-2 focus:ring-accent-500/50 placeholder-slate-400"
-                  disabled={isTyping}
-                  id="chatbot-input"
-                />
-                <button
-                  onClick={handleSend}
-                  disabled={!input.trim() || isTyping}
-                  className="w-9 h-9 rounded-full bg-accent-500 text-white flex items-center justify-center transition-all hover:bg-accent-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                  id="chatbot-send"
-                >
-                  <Send size={16} />
-                </button>
               </div>
+            ))}
+
+            {/* Quick suggestion chips */}
+            {messages.length === 1 && (
+              <div className="pt-2 flex flex-wrap gap-1.5">
+                {[
+                  'Show certifications 📜',
+                  'Featured projects 💻',
+                  'Work experience 💼',
+                  'Contact info ✉️'
+                ].map((chip, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setInput(chip);
+                      setTimeout(() => {
+                        const sendBtn = document.getElementById('chatbot-send');
+                        if (sendBtn) sendBtn.click();
+                      }, 50);
+                    }}
+                    className="text-xs px-2.5 py-1 rounded-full bg-slate-100 dark:bg-dark-700 hover:bg-accent-500 hover:text-white dark:hover:bg-accent-600 text-slate-600 dark:text-slate-300 transition-colors border border-slate-200/70 dark:border-dark-600 text-left"
+                  >
+                    {chip}
+                  </button>
+                ))}
+              </div>
+            )}
+            
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-slate-100 dark:bg-dark-700 flex items-center justify-center text-slate-600 dark:text-slate-300">
+                    <Bot size={12} />
+                  </div>
+                  <div className="px-4 py-2.5 rounded-2xl rounded-bl-md bg-slate-100 dark:bg-dark-700 text-xs text-slate-400">
+                    Thinking...
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input */}
+          <div className="p-3 border-t border-slate-200 dark:border-dark-700">
+            <div className="flex items-center gap-2">
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Type a message..."
+                className="flex-1 px-4 py-2.5 rounded-full bg-slate-100 dark:bg-dark-700 text-sm text-slate-700 dark:text-slate-200 border-0 outline-none focus:ring-2 focus:ring-accent-500/50 placeholder-slate-400"
+                disabled={isTyping}
+                id="chatbot-input"
+              />
+              <button
+                onClick={handleSend}
+                disabled={!input.trim() || isTyping}
+                className="w-9 h-9 rounded-full bg-accent-500 text-white flex items-center justify-center transition-all hover:bg-accent-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                id="chatbot-send"
+              >
+                <Send size={16} />
+              </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Target, Code2, MapPin, GraduationCap, Briefcase, Zap, Download, FileText } from 'lucide-react';
 import { useProfile } from '../hooks/useProfile';
 import { downloadResume } from '../services/resumeService';
 
 const About = () => {
   const { data: profile, loading } = useProfile();
-
 
   if (loading) return null; // Wait to load, Home.jsx handles initial skeleton
 
@@ -21,16 +19,6 @@ const About = () => {
       highlights: ['Problem Solving', 'Teamwork', 'Learning Mindset']
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-  };
-
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
       <div className="text-center mb-8">
@@ -40,39 +28,33 @@ const About = () => {
         <div className="w-16 h-1.5 bg-accent-500 rounded-full mx-auto"></div>
       </div>
 
-      <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start"
-      >
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* Left Column - Biography */}
         <div className="lg:col-span-7 space-y-4">
-            <motion.div variants={itemVariants} className="space-y-3 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+            <div className="space-y-3 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
                 <p className="text-base sm:text-lg font-medium text-slate-800 dark:text-slate-100 italic border-l-4 border-accent-500 pl-3.5 py-0.5 mb-3">
                     "{about.personalStatement}"
                 </p>
                 <p>{about.paragraph1}</p>
                 <p>{about.paragraph2}</p>
                 <p>{about.paragraph3}</p>
-            </motion.div>
+            </div>
 
-            <motion.div variants={itemVariants} className="pt-4 mt-4 border-t border-theme-border flex flex-wrap gap-2">
+            <div className="pt-4 mt-4 border-t border-theme-border flex flex-wrap gap-2">
                 {about.highlights?.map((highlight, index) => (
-                    <span key={index} className="px-3 py-1.5 bg-theme-bg border border-theme-border rounded-lg text-xs font-bold text-accent-500 shadow-sm flex items-center gap-1.5 transition-transform hover:-translate-y-0.5">
+                    <span key={index} className="px-3 py-1.5 bg-theme-bg border border-theme-border rounded-lg text-xs font-bold text-accent-500 shadow-sm flex items-center gap-1.5 hover:-translate-y-0.5">
                         <Zap size={13}/> {highlight}
                     </span>
                 ))}
-            </motion.div>
+            </div>
         </div>
 
         {/* Right Column - Glass Cards */}
         <div className="lg:col-span-5 space-y-3.5">
             
             {/* Focus Area Card */}
-            <motion.div variants={itemVariants} whileHover={{ y: -3 }} className="glass p-4 sm:p-4.5 rounded-xl border border-theme-border/50 shadow-md relative overflow-hidden group transition-all duration-300">
-                <div className="absolute top-0 right-0 w-28 h-28 bg-accent-500/10 rounded-full blur-[30px] group-hover:bg-accent-500/20 transition-colors"></div>
+            <div className="glass p-4 sm:p-4.5 rounded-xl border border-theme-border/50 shadow-md relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-28 h-28 bg-accent-500/10 rounded-full blur-[30px]"></div>
                 <div className="flex items-start gap-3.5 relative z-10">
                     <div className="p-2.5 bg-accent-500/10 text-accent-500 rounded-lg shrink-0"><Target size={18}/></div>
                     <div>
@@ -82,11 +64,11 @@ const About = () => {
                         </p>
                     </div>
                 </div>
-            </motion.div>
+            </div>
 
             {/* Skills Summary Card */}
-            <motion.div variants={itemVariants} whileHover={{ y: -3 }} className="glass p-4 sm:p-4.5 rounded-xl border border-theme-border/50 shadow-md relative overflow-hidden group transition-all duration-300">
-                <div className="absolute bottom-0 left-0 w-28 h-28 bg-blue-500/10 rounded-full blur-[30px] group-hover:bg-blue-500/20 transition-colors"></div>
+            <div className="glass p-4 sm:p-4.5 rounded-xl border border-theme-border/50 shadow-md relative overflow-hidden group">
+                <div className="absolute bottom-0 left-0 w-28 h-28 bg-blue-500/10 rounded-full blur-[30px]"></div>
                 <div className="flex items-start gap-3.5 relative z-10">
                     <div className="p-2.5 bg-blue-500/10 text-blue-500 rounded-lg shrink-0"><Code2 size={18}/></div>
                     <div>
@@ -96,38 +78,38 @@ const About = () => {
                         </p>
                     </div>
                 </div>
-            </motion.div>
+            </div>
 
             {/* Quick Info Grid Card */}
-            <motion.div variants={itemVariants} className="glass p-4 sm:p-4.5 rounded-xl border border-theme-border/50 shadow-md">
+            <div className="glass p-4 sm:p-4.5 rounded-xl border border-theme-border/50 shadow-md">
                 <div className="space-y-3">
                     <div className="flex items-center gap-3 group">
-                        <div className="w-8 h-8 rounded-full bg-theme-bg flex items-center justify-center text-theme-muted border border-theme-border group-hover:border-accent-500 group-hover:text-accent-500 transition-colors"><MapPin size={15}/></div>
+                        <div className="w-8 h-8 rounded-full bg-theme-bg flex items-center justify-center text-theme-muted border border-theme-border group-hover:border-accent-500 group-hover:text-accent-500"><MapPin size={15}/></div>
                         <div>
                             <p className="text-[9px] text-theme-muted uppercase font-bold tracking-wider">Location</p>
                             <p className="text-xs sm:text-sm font-bold text-theme-text">{about.quickInfo?.location}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3 group">
-                        <div className="w-8 h-8 rounded-full bg-theme-bg flex items-center justify-center text-theme-muted border border-theme-border group-hover:border-accent-500 group-hover:text-accent-500 transition-colors"><GraduationCap size={15}/></div>
+                        <div className="w-8 h-8 rounded-full bg-theme-bg flex items-center justify-center text-theme-muted border border-theme-border group-hover:border-accent-500 group-hover:text-accent-500"><GraduationCap size={15}/></div>
                         <div>
                             <p className="text-[9px] text-theme-muted uppercase font-bold tracking-wider">Education</p>
                             <p className="text-xs sm:text-sm font-bold text-theme-text">{about.quickInfo?.education}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3 group">
-                        <div className="w-8 h-8 rounded-full bg-theme-bg flex items-center justify-center text-theme-muted border border-theme-border group-hover:border-accent-500 group-hover:text-accent-500 transition-colors"><Briefcase size={15}/></div>
+                        <div className="w-8 h-8 rounded-full bg-theme-bg flex items-center justify-center text-theme-muted border border-theme-border group-hover:border-accent-500 group-hover:text-accent-500"><Briefcase size={15}/></div>
                         <div>
                             <p className="text-[9px] text-theme-muted uppercase font-bold tracking-wider">Experience</p>
                             <p className="text-xs sm:text-sm font-bold text-theme-text">{about.quickInfo?.experience}</p>
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </div>
 
             {/* Resume / CV Card */}
-            <motion.div variants={itemVariants} whileHover={{ y: -3 }} className="glass p-4 sm:p-4.5 rounded-xl border border-theme-border/50 shadow-md relative overflow-hidden group transition-all duration-300">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-accent-500/10 rounded-full blur-[25px] group-hover:bg-accent-500/20 transition-colors"></div>
+            <div className="glass p-4 sm:p-4.5 rounded-xl border border-theme-border/50 shadow-md relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-accent-500/10 rounded-full blur-[25px]"></div>
                 <div className="flex items-center justify-between gap-3 relative z-10">
                     <div className="flex items-center gap-3">
                         <div className="p-2.5 bg-accent-500/10 text-accent-500 rounded-lg shrink-0">
@@ -141,16 +123,16 @@ const About = () => {
                     <button
                         type="button"
                         onClick={() => downloadResume(profile?.hero?.resumeUrl)}
-                        className="px-3.5 py-2 bg-accent-500 hover:bg-accent-600 text-white rounded-lg text-xs font-bold shadow-md shadow-accent-500/20 flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+                        className="px-3.5 py-2 bg-accent-500 hover:bg-accent-600 text-white rounded-lg text-xs font-bold shadow-md shadow-accent-500/20 flex items-center gap-1.5 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
                     >
                         <Download size={13} />
                         Download CV
                     </button>
                 </div>
-            </motion.div>
+            </div>
 
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

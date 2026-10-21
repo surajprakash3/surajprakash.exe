@@ -1,5 +1,4 @@
 import { useState, useMemo, useRef } from 'react';
-import { motion } from 'framer-motion';
 import { Search, Tag, Calendar, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { usePublishedBlogPosts } from '../hooks/useBlog';
@@ -28,16 +27,6 @@ const Blog = () => {
     return [...tags];
   }, [posts]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-  };
-
   return (
     <>
       <SEO
@@ -49,19 +38,13 @@ const Blog = () => {
         {/* Header & Controls */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold font-heading text-theme-text mb-2">
-                Blog & <span className="text-gradient">Articles</span>
-              </h2>
-              <div className="w-16 h-1.5 bg-accent-500 rounded-full mb-2"></div>
-              <p className="text-xs sm:text-sm text-theme-muted max-w-xl">
-                Thoughts, tutorials, and practical insights on modern web development and cloud technologies.
-              </p>
-            </motion.div>
+            <h2 className="text-3xl md:text-4xl font-bold font-heading text-theme-text mb-2">
+              Blog & <span className="text-gradient">Articles</span>
+            </h2>
+            <div className="w-16 h-1.5 bg-accent-500 rounded-full mb-2"></div>
+            <p className="text-xs sm:text-sm text-theme-muted max-w-xl">
+              Thoughts, tutorials, and practical insights on modern web development and cloud technologies.
+            </p>
           </div>
 
           {/* Search bar & Nav Arrows */}
@@ -132,7 +115,7 @@ const Blog = () => {
         {loading ? (
           <div className="flex flex-nowrap overflow-x-auto gap-5 pb-4 scrollbar-hide">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-64 w-[280px] sm:w-[320px] shrink-0 bg-slate-200 dark:bg-dark-700 rounded-2xl animate-pulse"></div>
+              <div key={i} className="h-64 w-[280px] sm:w-[320px] shrink-0 bg-slate-200 dark:bg-dark-700 rounded-2xl"></div>
             ))}
           </div>
         ) : posts.length === 0 ? (
@@ -140,17 +123,13 @@ const Blog = () => {
             <p>No articles found matching your criteria.</p>
           </div>
         ) : (
-          <motion.div
+          <div
             ref={scrollRef}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
             className="flex flex-nowrap overflow-x-auto gap-5 pb-5 pt-1 scroll-smooth snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0"
           >
             {posts.map((post) => (
-              <motion.article
+              <article
                 key={post._id}
-                variants={itemVariants}
                 className="w-[280px] sm:w-[320px] md:w-[340px] shrink-0 snap-start"
               >
                 <Link
@@ -198,9 +177,9 @@ const Blog = () => {
                     </span>
                   </div>
                 </Link>
-              </motion.article>
+              </article>
             ))}
-          </motion.div>
+          </div>
         )}
       </section>
     </>

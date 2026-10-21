@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { 
   Eye, Users, FolderKanban, MessageSquare, FileText, Lightbulb,
   TrendingUp, BarChart3
@@ -153,12 +152,9 @@ const Dashboard = () => {
 
         {/* Stat Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-          {statCards.map((card, i) => (
-            <motion.div
+          {statCards.map((card) => (
+            <div
               key={card.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
               className="bg-white dark:bg-dark-800 rounded-xl p-5 border border-slate-200 dark:border-dark-700 shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="flex items-center justify-between mb-3">
@@ -169,7 +165,7 @@ const Dashboard = () => {
               </div>
               <p className="text-2xl font-bold text-slate-900 dark:text-white">{card.value}</p>
               <p className="text-sm text-slate-500 dark:text-slate-400">{card.label}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Save, Upload, User, Briefcase, MapPin, Globe, Github, Linkedin, Twitter, Mail, Wand2, Plus, Minus, ArrowRight, Download, Eye, Layout, FileText, SplitSquareHorizontal, ShieldAlert, Sparkles, Navigation, CheckCircle } from 'lucide-react';
 import { useProfile } from '../../hooks/useProfile';
 import { getImageUrl } from '../../utils/imageUtils';
@@ -238,7 +237,7 @@ const ManageProfileInner = () => {
   const inputClass = "w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-700 border border-slate-200 dark:border-dark-600 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500 transition";
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="h-full">
+    <div className="h-full">
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 pb-4 border-b border-theme-border gap-4">
         <div>
           <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white">Portfolio Architecture</h1>
@@ -286,9 +285,8 @@ const ManageProfileInner = () => {
             </div>
 
             {/* --- HERO FORM --- */}
-            <AnimatePresence mode="wait">
             {activeTab === 'hero' && (
-              <motion.div key="hero" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-6">
+              <div key="hero" className="space-y-6">
                 
                 <div className="flex items-center justify-between">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg text-xs font-bold border border-indigo-200 dark:border-indigo-800">
@@ -403,12 +401,12 @@ const ManageProfileInner = () => {
                     </div>
                 </div>
 
-              </motion.div>
+              </div>
             )}
 
             {/* --- ABOUT FORM --- */}
             {activeTab === 'about' && (
-              <motion.div key="about" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-6">
+              <div key="about" className="space-y-6">
                 
                 <div className="flex items-center justify-between">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs font-bold border border-emerald-200 dark:border-emerald-800">
@@ -492,9 +490,8 @@ const ManageProfileInner = () => {
                     </div>
                 </div>
 
-              </motion.div>
+              </div>
             )}
-            </AnimatePresence>
 
             {/* --- GLOBAL SOCIALS (Applies to Both) --- */}
             <div className="glass rounded-2xl p-6 border border-theme-border/50">
@@ -538,9 +535,8 @@ const ManageProfileInner = () => {
                 </div>
                 
                 <div className="glass rounded-[2rem] overflow-hidden border border-theme-border shadow-2xl scale-[0.85] transform origin-top w-[115%]">
-                    <AnimatePresence mode="wait">
-                        {previewMode === 'hero' ? (
-                            <motion.div key="pv-hero" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-theme-bg relative p-8 min-h-[600px] flex flex-col justify-center">
+                    {previewMode === 'hero' ? (
+                        <div key="pv-hero" className="bg-theme-bg relative p-8 min-h-[600px] flex flex-col justify-center">
                                 <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/20 rounded-full blur-[60px] pointer-events-none"></div>
 
                                 {heroForm.availability && (
@@ -593,9 +589,9 @@ const ManageProfileInner = () => {
                                         <div className="w-full h-full flex items-center justify-center text-slate-400 bg-theme-card">Image</div>
                                     )}
                                 </div>
-                            </motion.div>
+                            </div>
                         ) : (
-                            <motion.div key="pv-about" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-theme-bg relative p-8 min-h-[600px]">
+                            <div key="pv-about" className="bg-theme-bg relative p-8 min-h-[600px]">
                                 <h2 className="text-2xl font-bold font-heading mb-6 border-b border-theme-border pb-2">About <span className="text-accent-500">Me</span></h2>
                                 
                                 <div className="space-y-4 text-xs text-theme-muted leading-relaxed">
@@ -623,14 +619,13 @@ const ManageProfileInner = () => {
                                     <span>{aboutForm.quickInfo.experience || 'Experience'} Exp</span>
                                     <span>{aboutForm.quickInfo.education || 'Education'}</span>
                                 </div>
-                            </motion.div>
+                            </div>
                         )}
-                    </AnimatePresence>
                 </div>
             </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

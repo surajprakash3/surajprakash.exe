@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, X, Globe, Link as LinkIcon, Image as ImageIcon } from 'lucide-react';
 import { useSocials } from '../../hooks/useSocials';
 import { getImageUrl } from '../../utils/imageUtils';
@@ -113,7 +112,7 @@ const ManageSocial = () => {
       </div>
 
       {showForm && (
-        <motion.form initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} onSubmit={handleSubmit} className="bg-white dark:bg-dark-800 rounded-2xl p-6 border border-slate-200 dark:border-dark-700 shadow-xl space-y-6">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-dark-800 rounded-2xl p-6 border border-slate-200 dark:border-dark-700 shadow-xl space-y-6">
           <div className="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-dark-700">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Globe size={20} className="text-accent-500" />
@@ -171,7 +170,7 @@ const ManageSocial = () => {
               {editing ? 'Update Platform' : 'Add Platform'}
             </button>
           </div>
-        </motion.form>
+        </form>
       )}
 
       {/* List */}
@@ -199,7 +198,7 @@ const ManageSocial = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {items.map(social => (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={social._id} className="group relative flex items-center p-4 bg-white dark:bg-dark-800 rounded-2xl border border-slate-200 dark:border-dark-700 hover:border-accent-500/50 hover:shadow-lg hover:shadow-accent-500/5 transition-all">
+                    <div key={social._id} className="group relative flex items-center p-4 bg-white dark:bg-dark-800 rounded-2xl border border-slate-200 dark:border-dark-700 hover:border-accent-500/50 hover:shadow-lg hover:shadow-accent-500/5 transition-all">
                       
                       <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-100 dark:border-dark-600 flex items-center justify-center shrink-0 overflow-hidden p-2.5 mr-4">
                         <ManageSocialImage social={social} isValidIcon={isValidIcon} />
@@ -216,7 +215,7 @@ const ManageSocial = () => {
                         <button onClick={() => handleDelete(social._id)} className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-50 dark:hover:bg-dark-700 rounded-lg transition"><Trash2 size={14} /></button>
                       </div>
 
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </div>

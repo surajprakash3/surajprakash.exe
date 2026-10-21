@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, X, Check } from 'lucide-react';
 import { useAllBlogPosts } from '../../hooks/useBlog';
 import * as blogService from '../../services/blogService';
@@ -76,9 +75,7 @@ const ManageBlog = () => {
 
       {/* Form */}
       {showForm && (
-        <motion.form
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
+        <form
           onSubmit={handleSubmit}
           className="bg-white dark:bg-dark-800 rounded-xl p-6 border border-slate-200 dark:border-dark-700 space-y-4"
         >
@@ -127,7 +124,7 @@ const ManageBlog = () => {
           <button type="submit" className="px-6 py-2.5 rounded-xl bg-accent-500 text-white font-medium hover:bg-accent-600 transition">
             {editing ? 'Update' : 'Create'} Post
           </button>
-        </motion.form>
+        </form>
       )}
 
       {/* Posts list */}

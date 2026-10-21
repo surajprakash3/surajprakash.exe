@@ -1,5 +1,4 @@
 import { useState, useRef, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { Globe, Github, Linkedin, Twitter, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSocials } from '../hooks/useSocials';
 import { getImageUrl } from '../utils/imageUtils';
@@ -125,10 +124,8 @@ const Social = () => {
 
                 <div className="flex flex-wrap gap-2.5 flex-grow">
                   {items.map((item) => (
-                    <motion.a
+                    <a
                       key={item._id}
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -139,7 +136,7 @@ const Social = () => {
                       <span className="text-[10px] font-semibold text-theme-muted group-hover:text-accent-500 truncate max-w-[52px] mt-1 text-center">
                         {item.platform || 'Link'}
                       </span>
-                    </motion.a>
+                    </a>
                   ))}
                 </div>
               </div>

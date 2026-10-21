@@ -1,6 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { MotionConfig } from 'framer-motion';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import ChatBot from './components/ChatBot';
@@ -74,13 +73,12 @@ const AnimatedRoutes = () => {
 
 function App() {
   return (
-    <MotionConfig reducedMotion="always" transition={{ duration: 0 }}>
-      <BackgroundProvider>
-        <BrowserRouter>
-          <AnimatedBackground />
-          <Suspense fallback={
+    <BackgroundProvider>
+      <BrowserRouter>
+        <AnimatedBackground />
+        <Suspense fallback={
           <div className="flex h-screen items-center justify-center bg-slate-50 dark:bg-dark-900">
-            <div className="w-16 h-16 border-4 border-accent-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-3 border-accent-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
         }>
           <AnimatedRoutes />
@@ -89,8 +87,7 @@ function App() {
           <ChatBot />
         </Suspense>
       </BrowserRouter>
-      </BackgroundProvider>
-    </MotionConfig>
+    </BackgroundProvider>
   );
 }
 

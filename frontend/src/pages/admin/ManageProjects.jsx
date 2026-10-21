@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, X } from 'lucide-react';
 import { useProjects } from '../../hooks/useProjects';
 import { getImageUrl } from '../../utils/imageUtils';
@@ -75,7 +74,7 @@ const ManageProjects = () => {
       </div>
 
       {showForm && (
-        <motion.form initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} onSubmit={handleSubmit}
+        <form onSubmit={handleSubmit}
           className="bg-theme-card rounded-xl p-6 border border-theme-border space-y-4 shadow-xl">
           <div className="flex justify-between items-center mb-2">
             <h3 className="font-bold text-theme-text">{editing ? 'Edit' : 'New'} Project</h3>
@@ -143,7 +142,7 @@ const ManageProjects = () => {
               {editing ? 'Update Project' : 'Create Project'}
             </button>
           </div>
-        </motion.form>
+        </form>
       )}
 
       <div className="space-y-4">

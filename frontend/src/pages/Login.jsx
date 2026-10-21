@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { Lock, Mail, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import SEO from '../components/SEO';
@@ -37,12 +36,7 @@ const Login = () => {
     <>
       <SEO title="Login" description="Admin login for Suraj Prakash's portfolio" url="/login" />
       <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-md"
-        >
+        <div className="w-full max-w-md">
           <div className="glass rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-dark-700">
             {/* Header */}
             <div className="text-center mb-8">
@@ -55,14 +49,10 @@ const Login = () => {
 
             {/* Error Alert */}
             {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center gap-2 text-red-700 dark:text-red-400 text-sm"
-              >
+              <div className="mb-6 px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center gap-2 text-red-700 dark:text-red-400 text-sm">
                 <AlertCircle size={16} />
                 {error}
-              </motion.div>
+              </div>
             )}
 
             {/* Form */}
@@ -77,7 +67,7 @@ const Login = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-700 border border-slate-200 dark:border-dark-600 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500 transition"
+                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-700 border border-slate-200 dark:border-dark-600 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500"
                     placeholder="admin@portfolio.com"
                     required
                     id="login-email"
@@ -95,7 +85,7 @@ const Login = () => {
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-11 pr-12 py-3 rounded-xl bg-slate-50 dark:bg-dark-700 border border-slate-200 dark:border-dark-600 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500 transition"
+                    className="w-full pl-11 pr-12 py-3 rounded-xl bg-slate-50 dark:bg-dark-700 border border-slate-200 dark:border-dark-600 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500"
                     placeholder="••••••••"
                     required
                     minLength={6}
@@ -114,7 +104,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-accent-500 to-indigo-600 text-white font-medium shadow-lg shadow-accent-500/30 hover:shadow-accent-500/50 focus:outline-none focus:ring-2 focus:ring-accent-500/50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-accent-500 to-indigo-600 text-white font-medium shadow-lg shadow-accent-500/30 hover:shadow-accent-500/50 focus:outline-none focus:ring-2 focus:ring-accent-500/50 disabled:opacity-60 disabled:cursor-not-allowed"
                 id="login-submit"
               >
                 {loading ? (
@@ -128,7 +118,7 @@ const Login = () => {
               </button>
             </form>
           </div>
-        </motion.div>
+        </div>
       </div>
     </>
   );

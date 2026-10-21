@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
 import {
   Briefcase,
   Calendar,
@@ -22,9 +21,8 @@ const ExperienceCard = ({ item, isWork }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <motion.div
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className="glass rounded-2xl p-5 border border-slate-200/50 dark:border-dark-700/50 hover:shadow-xl hover:shadow-accent-500/5 transition-all duration-300 flex flex-col justify-between w-[290px] sm:w-[340px] md:w-[370px] shrink-0 snap-start relative overflow-hidden group"
+    <div
+      className="glass rounded-2xl p-5 border border-slate-200/50 dark:border-dark-700/50 hover:shadow-xl hover:shadow-accent-500/5 flex flex-col justify-between w-[290px] sm:w-[340px] md:w-[370px] shrink-0 snap-start relative overflow-hidden group"
     >
       {/* Top accent line */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-500/30 via-accent-500 to-accent-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -150,7 +148,7 @@ const ExperienceCard = ({ item, isWork }) => {
           </a>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 

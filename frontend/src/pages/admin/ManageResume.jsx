@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
 import { Upload, FileText, Check, AlertCircle } from 'lucide-react';
 import { useResume } from '../../hooks/useResume';
 import * as resumeService from '../../services/resumeService';
@@ -78,9 +77,7 @@ const ManageResume = () => {
 
         {/* Message */}
         {message && (
-          <motion.div
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
+          <div
             className={`mt-4 px-4 py-2.5 rounded-lg text-sm flex items-center gap-2 ${
               message.type === 'success'
                 ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
@@ -89,7 +86,7 @@ const ManageResume = () => {
           >
             {message.type === 'success' ? <Check size={16} /> : <AlertCircle size={16} />}
             {message.text}
-          </motion.div>
+          </div>
         )}
       </div>
     </div>

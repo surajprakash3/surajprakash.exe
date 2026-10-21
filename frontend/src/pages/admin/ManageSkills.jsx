@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, X, Code2 } from 'lucide-react';
 import { useSkills } from '../../hooks/useSkills';
 import { getImageUrl } from '../../utils/imageUtils';
@@ -116,7 +115,7 @@ const ManageSkills = () => {
       </div>
 
       {showForm && (
-        <motion.form initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} onSubmit={handleSubmit}
+        <form onSubmit={handleSubmit}
           className="bg-theme-card rounded-xl p-6 border border-theme-border space-y-4 shadow-xl">
           <div className="flex justify-between items-center mb-2">
             <h3 className="font-bold text-theme-text">{editing ? 'Edit' : 'New'} Skill</h3>
@@ -161,7 +160,7 @@ const ManageSkills = () => {
               {editing ? 'Update Skill' : 'Create Skill'}
             </button>
           </div>
-        </motion.form>
+        </form>
       )}
 
       <div className="space-y-6 mt-8">

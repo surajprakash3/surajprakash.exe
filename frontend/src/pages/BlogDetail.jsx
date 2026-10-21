@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, User, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { useBlogPost } from '../hooks/useBlog';
@@ -41,7 +40,7 @@ const BlogDetail = () => {
         image={getImageUrl(post.coverImage) || '/og-image.png'}
       />
       <article className="py-20 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <div>
           {/* Back link */}
           <Link
             to="/blog"
@@ -92,7 +91,7 @@ const BlogDetail = () => {
           <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-heading prose-a:text-accent-500 hover:prose-a:text-accent-600 prose-img:rounded-xl prose-pre:bg-slate-900 dark:prose-pre:bg-dark-900 prose-code:text-accent-600 dark:prose-code:text-accent-400">
             <ReactMarkdown>{post.content}</ReactMarkdown>
           </div>
-        </motion.div>
+        </div>
       </article>
     </>
   );

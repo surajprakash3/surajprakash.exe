@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Plus, Edit2, Trash2, Award, Calendar, Link as LinkIcon, ExternalLink, Image as ImageIcon } from 'lucide-react';
 import { useCertifications } from '../../hooks/useCertifications';
 import { getImageUrl } from '../../utils/imageUtils';
@@ -125,7 +124,7 @@ const ManageCertifications = () => {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+    <div>
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <div>
@@ -264,7 +263,7 @@ const ManageCertifications = () => {
           </div>
         ) : (
           certifications.map(cert => (
-            <motion.div key={cert._id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass rounded-2xl p-5 border border-slate-200/50 dark:border-dark-700/50 hover:shadow-lg hover:border-slate-300 dark:hover:border-dark-600 transition-all flex flex-col sm:flex-row gap-5 items-start">
+            <div key={cert._id} className="glass rounded-2xl p-5 border border-slate-200/50 dark:border-dark-700/50 hover:shadow-lg hover:border-slate-300 dark:hover:border-dark-600 transition-all flex flex-col sm:flex-row gap-5 items-start">
               
               {/* Logo */}
               <div className="w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-dark-800 flex items-center justify-center p-2 border border-slate-200 dark:border-dark-700">
@@ -309,11 +308,11 @@ const ManageCertifications = () => {
                 </button>
               </div>
 
-            </motion.div>
+            </div>
           ))
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 

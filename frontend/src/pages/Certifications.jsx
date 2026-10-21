@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { motion } from 'framer-motion';
 import { Award, ExternalLink, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCertifications } from '../hooks/useCertifications';
 import { getImageUrl } from '../utils/imageUtils';
@@ -17,20 +16,10 @@ const Certifications = () => {
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  };
-
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-        <div className="animate-pulse space-y-4">
+        <div className="space-y-4">
           <div className="h-8 w-44 bg-slate-200 dark:bg-dark-700 rounded-lg mb-8"></div>
           <div className="flex flex-nowrap overflow-x-auto gap-5 pb-4 scrollbar-hide">
             {[1, 2, 3].map((i) => (
@@ -48,19 +37,13 @@ const Certifications = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h1 className="text-3xl md:text-4xl font-bold font-heading text-slate-900 dark:text-white mb-3">
-                Licenses & <span className="text-gradient">Certifications</span>
-              </h1>
-              <div className="w-16 h-1.5 bg-accent-500 rounded-full mb-3"></div>
-              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl">
-                Professional credentials and verified achievements demonstrating my expertise.
-              </p>
-            </motion.div>
+            <h1 className="text-3xl md:text-4xl font-bold font-heading text-slate-900 dark:text-white mb-3">
+              Licenses & <span className="text-gradient">Certifications</span>
+            </h1>
+            <div className="w-16 h-1.5 bg-accent-500 rounded-full mb-3"></div>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl">
+              Professional credentials and verified achievements demonstrating my expertise.
+            </p>
           </div>
 
           {/* Navigation buttons */}
@@ -94,9 +77,8 @@ const Certifications = () => {
             className="flex flex-nowrap overflow-x-auto gap-5 pb-5 pt-1 scroll-smooth snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0"
           >
             {certifications.map((cert) => (
-              <motion.div
+              <div
                 key={cert._id}
-                variants={itemVariants}
                 className="glass rounded-2xl p-4 sm:p-5 border border-slate-200/50 dark:border-dark-700/50 hover:shadow-xl hover:shadow-accent-500/5 hover:-translate-y-1 transition-all duration-300 flex flex-col sm:flex-row gap-4 relative overflow-hidden group w-[280px] sm:w-[320px] md:w-[350px] shrink-0 snap-start"
               >
                 {/* Decorative background glow */}
@@ -148,7 +130,7 @@ const Certifications = () => {
                     </a>
                   )}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}

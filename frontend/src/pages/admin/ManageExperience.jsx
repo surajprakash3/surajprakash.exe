@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, X, Calendar, MapPin, Briefcase, GraduationCap, Link, PlusCircle, Image as ImageIcon, Building2 } from 'lucide-react';
 import { useExperiences } from '../../hooks/useExperiences';
 import { getImageUrl } from '../../utils/imageUtils';
@@ -150,7 +149,7 @@ const ManageExperience = () => {
       </div>
 
       {showForm && (
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="bg-theme-card rounded-2xl p-6 border border-theme-border shadow-2xl relative">
+        <div className="bg-theme-card rounded-2xl p-6 border border-theme-border shadow-2xl relative">
           <button onClick={resetForm} className="absolute top-4 right-4 p-2 text-theme-muted hover:text-red-500 transition"><X size={20} /></button>
           
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -358,7 +357,7 @@ const ManageExperience = () => {
               </div>
             </div>
           </form>
-        </motion.div>
+        </div>
       )}
 
       {/* Entries Display */}
