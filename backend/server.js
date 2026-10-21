@@ -19,6 +19,7 @@ import resumeRoutes from './routes/resumeRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import certificationRoutes from './routes/certificationRoutes.js';
 import socialRoutes from './routes/socialRoutes.js';
+import coderRoutes from './routes/coderRoutes.js';
 
 console.log('Starting server...');
 // Connect to database
@@ -83,6 +84,7 @@ app.use('/api/resume', resumeRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/certifications', certificationRoutes);
 app.use('/api/socials', socialRoutes);
+app.use('/api/coder', coderRoutes);
 
 // Error handling
 app.use(notFound);

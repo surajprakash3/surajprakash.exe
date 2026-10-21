@@ -2,7 +2,8 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { 
   LayoutDashboard, FolderKanban, Lightbulb, Briefcase, 
-  FileText, MessageSquare, Upload, LogOut, ChevronLeft, User, Award, Globe
+  FileText, MessageSquare, Upload, LogOut, ChevronLeft, User, Award, Globe,
+  Terminal, Layers, Layout
 } from 'lucide-react';
 
 const AdminLayout = () => {
@@ -17,6 +18,9 @@ const AdminLayout = () => {
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard, end: true },
     { name: 'Profile', path: '/admin/profile', icon: User },
+    { name: 'Coding Platforms', path: '/admin/platforms', icon: Terminal },
+    { name: 'DSA Progress', path: '/admin/dsa', icon: Layers },
+    { name: 'Coder Layout', path: '/admin/coder-layout', icon: Layout },
     { name: 'Projects', path: '/admin/projects', icon: FolderKanban },
     { name: 'Skills', path: '/admin/skills', icon: Lightbulb },
     { name: 'Experience', path: '/admin/experience', icon: Briefcase },

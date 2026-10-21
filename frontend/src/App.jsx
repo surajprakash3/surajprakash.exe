@@ -18,6 +18,7 @@ const Blog = lazy(() => import('./pages/Blog'));
 const BlogDetail = lazy(() => import('./pages/BlogDetail'));
 const Login = lazy(() => import('./pages/Login'));
 const Social = lazy(() => import('./pages/Social'));
+const Coder = lazy(() => import('./pages/Coder'));
 
 // Admin pages
 const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
@@ -31,6 +32,9 @@ const ManageMessages = lazy(() => import('./pages/admin/ManageMessages'));
 const ManageResume = lazy(() => import('./pages/admin/ManageResume'));
 const ManageProfile = lazy(() => import('./pages/admin/ManageProfile'));
 const ManageSocial = lazy(() => import('./pages/admin/ManageSocial'));
+const ManageCodingPlatforms = lazy(() => import('./pages/admin/ManageCodingPlatforms'));
+const ManageDSAProgress = lazy(() => import('./pages/admin/ManageDSAProgress'));
+const ManageCoderLayout = lazy(() => import('./pages/admin/ManageCoderLayout'));
 
 const AnimatedRoutes = () => {
   return (
@@ -48,6 +52,7 @@ const AnimatedRoutes = () => {
         <Route path="blog/:slug" element={<BlogDetail />} />
         <Route path="login" element={<Login />} />
         <Route path="socials" element={<Social />} />
+        <Route path="coder" element={<Coder />} />
       </Route>
 
       {/* Admin routes */}
@@ -57,6 +62,9 @@ const AnimatedRoutes = () => {
         </ProtectedRoute>
       }>
         <Route index element={<Dashboard />} />
+        <Route path="platforms" element={<ManageCodingPlatforms />} />
+        <Route path="dsa" element={<ManageDSAProgress />} />
+        <Route path="coder-layout" element={<ManageCoderLayout />} />
         <Route path="projects" element={<ManageProjects />} />
         <Route path="skills" element={<ManageSkills />} />
         <Route path="experience" element={<ManageExperience />} />
