@@ -152,7 +152,7 @@ const ProjectCard = ({ project }) => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.03, boxShadow: "var(--theme-glow)" }}
                   whileTap={{ scale: 0.97 }}
-                  className="group flex items-center justify-center px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-accent-600 via-accent-400 to-accent-600 animate-gradient text-white transition-all duration-300 font-semibold text-xs shadow-md border border-transparent overflow-hidden relative"
+                  className="group flex items-center justify-center px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-accent-600 via-accent-500 to-accent-600 text-white font-semibold text-xs shadow-md border border-transparent overflow-hidden relative"
                 >
                   <ExternalLink size={14} className="mr-1 group-hover:translate-x-0.5 transition-transform duration-300" />
                   Live Demo
@@ -203,7 +203,7 @@ const Projects = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className={`inline-block mr-[0.3em] ${word === "Projects" ? "text-gradient animate-gradient" : ""}`}
+                className={`inline-block mr-[0.3em] ${word === "Projects" ? "text-gradient" : ""}`}
               >
                 {word}
               </motion.span>

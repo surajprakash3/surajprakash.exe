@@ -48,12 +48,25 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-tap-highlight-color: transparent;
   }
   
+  /* Disable animations and transitions globally across the whole website */
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.001s !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Keep essential loading spinner animation functional */
+  .animate-spin {
+    animation: spin 1s linear infinite !important;
+  }
+  
   body {
-    @apply antialiased transition-colors duration-300;
+    @apply antialiased;
     background-color: rgb(var(--theme-bg));
     color: rgb(var(--theme-text));
     font-family: 'Inter', sans-serif;

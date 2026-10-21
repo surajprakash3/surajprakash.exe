@@ -65,8 +65,8 @@ const Social = () => {
   return (
     <div className="py-10 sm:py-14 relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen -z-10 animate-blob pointer-events-none"></div>
-      <div className="absolute bottom-20 right-10 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen -z-10 animate-blob animation-delay-2000 pointer-events-none"></div>
+      <div className="absolute top-20 left-10 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen -z-10 pointer-events-none"></div>
+      <div className="absolute bottom-20 right-10 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen -z-10 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}

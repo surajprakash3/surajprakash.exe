@@ -172,7 +172,7 @@ const Home = () => {
                 whileTap={{ scale: 0.98 }}
                 className="group relative inline-flex items-center justify-center px-5 py-2.5 text-xs sm:text-sm font-bold text-white overflow-hidden rounded-xl border border-transparent shadow-md shadow-accent-500/20 w-full sm:w-auto cursor-pointer"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-accent-600 via-accent-400 to-accent-600 bg-[length:200%_auto] animate-gradient z-0"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-accent-600 via-accent-500 to-accent-600 z-0"></div>
                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors z-0"></div>
                 <span className="relative z-10 flex items-center">
                   View My Work

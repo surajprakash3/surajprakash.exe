@@ -1,5 +1,4 @@
 import React, { Component, useState, useEffect, useMemo, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate, useScroll } from 'framer-motion';
 import { Code2, Users, Wrench, Lightbulb, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSkills } from '../hooks/useSkills';
 import { getImageUrl } from '../utils/imageUtils';
@@ -73,89 +72,42 @@ const SkillItem = ({ skill }) => {
   const [imgError, setImgError] = useState(false);
   const [deviconError, setDeviconError] = useState(false);
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 20 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = (e.clientX - rect.left) / width - 0.5;
-    const mouseY = (e.clientY - rect.top) / height - 0.5;
-    x.set(mouseX);
-    y.set(mouseY);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   const hasStoredIcon = isValidIcon(skill.icon);
   const deviconUrl = !hasStoredIcon ? getDeviconUrl(skill.name) : null;
   const iconSrc = hasStoredIcon ? getImageUrl(skill.icon) : deviconUrl;
   const showFallback = (!iconSrc || (hasStoredIcon && imgError) || (!hasStoredIcon && deviconError));
 
   return (
-    <motion.div
-      className="perspective-1000"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <motion.div
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
-        }}
-        className="flex-shrink-0 flex flex-col items-center justify-center p-2 w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] bg-theme-bg/60 backdrop-blur-md rounded-xl border border-theme-border shadow-theme-glow-sm transition-all duration-300 cursor-pointer relative group/icon hover:border-accent-500/50"
-      >
-        {!showFallback ? (
-          <motion.img
-            src={iconSrc}
-            alt={skill.name}
-            className="w-7 h-7 sm:w-8 sm:h-8 object-contain relative z-10"
-            onError={() => {
-              if (hasStoredIcon) setImgError(true);
-              else setDeviconError(true);
-            }}
-            whileHover={{ scale: 1.1 }}
-            style={{ transform: "translateZ(30px)" }}
-          />
-        ) : (
-          <span className="text-lg sm:text-xl font-bold text-accent-400 relative z-10" style={{ transform: "translateZ(30px)" }}>
-            {skill.name ? skill.name.charAt(0).toUpperCase() : '?'}
-          </span>
-        )}
-        <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-bold text-theme-muted opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none bg-theme-card/90 px-2 py-0.5 rounded border border-theme-border shadow-lg z-30 tracking-wider uppercase">
-          {skill.name}
-        </div>
-      </motion.div>
-    </motion.div>
+    <div className="flex-shrink-0 flex flex-col items-center justify-center p-2 w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] bg-theme-bg/60 backdrop-blur-md rounded-xl border border-theme-border shadow-theme-glow-sm cursor-pointer relative group/icon hover:border-accent-500/50">
+      {!showFallback ? (
+        <img
+          src={iconSrc}
+          alt={skill.name}
+          className="w-7 h-7 sm:w-8 sm:h-8 object-contain relative z-10"
+          onError={() => {
+            if (hasStoredIcon) setImgError(true);
+            else setDeviconError(true);
+          }}
+        />
+      ) : (
+        <span className="text-lg sm:text-xl font-bold text-accent-400 relative z-10">
+          {skill.name ? skill.name.charAt(0).toUpperCase() : '?'}
+        </span>
+      )}
+      <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-bold text-theme-muted opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none bg-theme-card/90 px-2 py-0.5 rounded border border-theme-border shadow-lg z-30 tracking-wider uppercase">
+        {skill.name}
+      </div>
+    </div>
   );
 };
 
 const CategoryCard = ({ category }) => {
   if (!category || !category.icon) return null;
   const IconComponent = category.icon;
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, staggerChildren: 0.08 } }
-  };
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-      className="bg-theme-card/40 backdrop-blur-xl p-4 sm:p-5 rounded-2xl border border-theme-border shadow-theme-glow-sm hover:shadow-theme-glow transition-all duration-500 w-[260px] sm:w-[290px] md:w-[320px] shrink-0 snap-start flex flex-col h-full"
+    <div
+      className="bg-theme-card/40 backdrop-blur-xl p-4 sm:p-5 rounded-2xl border border-theme-border shadow-theme-glow-sm hover:shadow-theme-glow w-[260px] sm:w-[290px] md:w-[320px] shrink-0 snap-start flex flex-col h-full"
     >
       <div className="flex items-center gap-3 mb-4">
         <div className={`p-2.5 rounded-xl bg-gradient-to-br ${category.gradient || 'from-slate-500 to-slate-400'} text-white shadow-md shadow-accent-500/20`}>
@@ -182,7 +134,7 @@ const CategoryCard = ({ category }) => {
           </div>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
