@@ -5,22 +5,35 @@ import { getImageUrl } from '../../utils/imageUtils';
 import * as skillService from '../../services/skillService';
 
 const SKILL_STRUCTURE = {
-  "Technical Skills": [
-    "Programming Languages", "Frontend Development", "Backend Development",
-    "Full Stack Development", "Databases", "Cloud Computing", "DevOps",
-    "Version Control", "Deployment & Hosting", "Operating Systems", "Networking",
-    "Cybersecurity", "API Development", "Testing & Debugging",
-    "Data Structures & Algorithms", "System Design", "Performance Optimization",
-    "Development Tools", "Mobile Development", "Machine Learning / AI", "Blockchain"
+  "Frontend Development": [
+    "UI Library", "Markup", "Styling", "Utility CSS", "Scripting", "CSS Framework", "State Management"
   ],
-  "Core / Soft Skills": [
-    "Soft Skills", "Core Strengths", "Cognitive Skills", "Professional Skills"
+  "Backend Development": [
+    "Server Runtime", "REST APIs", "Authentication", "Framework", "Microservices"
+  ],
+  "Databases": [
+    "NoSQL Database", "Relational Database", "In-Memory / Cache", "Vector Database"
+  ],
+  "Cloud Infrastructure": [
+    "Compute Instances", "Object Storage", "Global CDN", "Access Management", "Virtual Network", "Serverless Functions"
+  ],
+  "DevOps & Deployment": [
+    "Containers", "Orchestration", "CI/CD Automation", "Version Control", "Repository & CI", "Infrastructure as Code", "Workflows", "Server OS"
+  ],
+  "Tools & Design": [
+    "IDE / Editor", "API Testing", "UI/UX Design", "Project Management", "Documentation", "Team Collaboration"
+  ],
+  "Programming Languages": [
+    "Systems Language", "Algorithms & OOP", "Object-Oriented", "Scripting & AI", "Web Programming"
+  ],
+  "Other Technologies": [
+    "Machine Learning", "Computer Vision", "Vision AI", "OS Kernel", "Configuration Management", "Protocols & Routing", "AI & Data Science"
+  ],
+  "Technical Skills": [
+    "Programming Languages", "Frontend Development", "Backend Development", "Full Stack Development", "Databases", "DevOps"
   ],
   "Tools & Technologies": [
     "Tools & Productivity"
-  ],
-  "Additional Skills": [
-    "Languages", "Interests", "Achievements"
   ]
 };
 
@@ -49,13 +62,13 @@ const ManageSkills = () => {
 
   const [form, setForm] = useState({
     name: '',
-    category: 'Technical Skills',
-    group: SKILL_STRUCTURE['Technical Skills'][0],
+    category: 'Frontend Development',
+    group: 'UI Library',
     icon: null
   });
 
   const resetForm = () => {
-    setForm({ name: '', category: 'Technical Skills', group: 'Programming Languages', icon: null });
+    setForm({ name: '', category: 'Frontend Development', group: 'UI Library', icon: null });
     setEditing(null);
     setShowForm(false);
   };

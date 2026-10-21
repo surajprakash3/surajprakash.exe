@@ -14,7 +14,7 @@ const skillSchema = new mongoose.Schema(
     category: {
       type: String,
       required: [true, 'Category is required'],
-      enum: ['Technical Skills', 'Core / Soft Skills', 'Tools & Technologies', 'Additional Skills']
+      trim: true
     },
     group: {
       type: String,
