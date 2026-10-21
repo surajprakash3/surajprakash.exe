@@ -191,11 +191,7 @@ const Experience = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         {/* Page Header */}
         <div className="mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div>
             <h1 className="text-3xl md:text-4xl font-bold font-heading text-slate-900 dark:text-white mb-2">
               Experience & <span className="text-gradient">Education</span>
             </h1>
@@ -203,7 +199,7 @@ const Experience = () => {
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl">
               My professional journey, roles, career milestones, and educational background.
             </p>
-          </motion.div>
+          </div>
         </div>
 
         {/* Work Experience Section */}
