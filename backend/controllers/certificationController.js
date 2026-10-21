@@ -19,7 +19,7 @@ const getCertifications = asyncHandler(async (req, res) => {
 // @route   POST /api/certifications
 // @access  Private
 const createCertification = asyncHandler(async (req, res) => {
-  const { name, issuer, issueDate, expiryDate, credentialId, credentialUrl } = req.body;
+  const { name, issuer, issueDate, expiryDate, credentialId, credentialUrl, category, featured } = req.body;
 
   const certification = new Certification({
     name,
@@ -27,7 +27,9 @@ const createCertification = asyncHandler(async (req, res) => {
     issueDate,
     expiryDate,
     credentialId,
-    credentialUrl
+    credentialUrl,
+    category: category || 'Other',
+    featured: featured === 'true' || featured === true
   });
 
   if (req.file) {
@@ -50,7 +52,7 @@ const updateCertification = asyncHandler(async (req, res) => {
     throw new Error('Certification not found');
   }
 
-  const { name, issuer, issueDate, expiryDate, credentialId, credentialUrl } = req.body;
+  const { name, issuer, issueDate, expiryDate, credentialId, credentialUrl, category, featured } = req.body;
 
   certification.name = name || certification.name;
   certification.issuer = issuer || certification.issuer;
@@ -58,6 +60,8 @@ const updateCertification = asyncHandler(async (req, res) => {
   certification.expiryDate = expiryDate !== undefined ? expiryDate : certification.expiryDate;
   certification.credentialId = credentialId !== undefined ? credentialId : certification.credentialId;
   certification.credentialUrl = credentialUrl !== undefined ? credentialUrl : certification.credentialUrl;
+  if (category !== undefined) certification.category = category;
+  if (featured !== undefined) certification.featured = (featured === 'true' || featured === true);
 
   if (req.file) {
     // Delete old logo from Cloudinary if configured

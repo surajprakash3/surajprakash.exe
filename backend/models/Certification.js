@@ -39,6 +39,15 @@ const certificationSchema = new mongoose.Schema(
     logoPublicId: {
       type: String,
       default: ''
+    },
+    category: {
+      type: String,
+      default: 'Other',
+      trim: true
+    },
+    featured: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }
